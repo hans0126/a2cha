@@ -1,0 +1,28 @@
+<h1>login</h1>
+<table>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" [ngModel]="loginInfo.employeeId" (ngModelChange)="loginInfo.employeeId=$event">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" [ngModel]="loginInfo.passwd" (ngModelChange)="loginInfo.passwd=$event">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" [ngModel]="loginInfo.accountsType" (ngModelChange)="loginInfo.accountsType=$event">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" [ngModel]="loginInfo.ittmscode" (ngModelChange)="loginInfo.ittmscode=$event">
+        </td>
+    </tr>
+</table>
+<button (click)="submit()">login</button>
+
