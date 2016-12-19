@@ -1,0 +1,33 @@
+<ul>
+    <li *ngFor="let item of organizeres">
+        <div class="List_item List_A">{{item.title}}</div>
+        <ul>
+            <li *ngFor="let department of item.child">
+                <div class='List_item List_B_title'>{{department.title}}</div>
+                <ul [ngSwitch]="my(department.child)">
+                    <div *ngSwitchCase="'has_child'">
+                        <li *ngFor="let group of department.child">
+                            <div class='List_C'>{{group.title}}</div>
+                            <ul>
+                                <li *ngFor="let user of group.employee">
+                                	<room class='person' [user]="user"></room>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
+
+                    
+                    <div *ngSwitchCase="'end'">
+                    
+                        <li *ngFor="let user of department.employee">
+                            <room class='person' [user]="user"></room>
+                        </li>
+                    
+                    </div>
+                    
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+

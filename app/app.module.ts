@@ -15,6 +15,9 @@ import { Ajax } from "./shared/ajax.service";
 
 import { routing } from './app.routes';
 import { GlobalValue } from "./shared/global_value.service";
+import { Organizeres } from "./dashboard/organizeres/organizeres.component.js";
+import { SingleRoom } from "./dashboard/shared/single-room.component.js";
+
 
 @NgModule({
     imports: [
@@ -26,7 +29,10 @@ import { GlobalValue } from "./shared/global_value.service";
     ],
     declarations: [
         AppComponent,
-        Login, Dashboard
+        Login,
+        Dashboard,
+        Organizeres,
+        SingleRoom
     ],
     bootstrap: [AppComponent],
     providers: [

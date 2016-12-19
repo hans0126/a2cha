@@ -18,10 +18,10 @@ export class AppComponent {
         this.route.queryParams.subscribe((params: any) => {
 
             globalValue.loginInfo = {
-                employeeId: params['employee_id'] || null,
-                passwd: params['passwd'] || null,
-                accountsType: params['accounts_type'] || null,
-                ittmscode: params['ittmscode'] || null
+                employeeId: params['employee_id'] || "08073",
+                passwd: params['passwd'] || "156456",
+                accountsType: params['accounts_type'] || "5",
+                ittmscode: params['ittmscode'] || "C000061"
             }
             
         });
