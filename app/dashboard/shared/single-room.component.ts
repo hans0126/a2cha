@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Chat } from './chat.service.js';
 @Component({
     selector: 'room',
     template: `<div class='person' (click)="openRoom()">
@@ -11,18 +12,14 @@ import { Component, Input } from '@angular/core';
 
 export class SingleRoom {
     @Input() user:any;
+   
+    constructor(private chat:Chat){}
 
-    constructor(){
-
-    }
-
-    ngOnInit() {
-      
-
-      
-    }
+    ngOnInit() {}
 
     openRoom(){
-    	
+    	this.chat.openRoom(this.user)
     }
+
+   
 }

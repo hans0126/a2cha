@@ -15,11 +15,8 @@
     <div class="Search" search-input>
     </div>
     <!--聯絡人-->
-
     <organizeres class="List Scroll">
-    	
     </organizeres>
-
     <!--
     <div ng-show="showCtrl.project" class="List Scroll" room-list="project"></div>
     <div ng-show="showCtrl.search" class="List Scroll" room-list="searchRooms"></div>
@@ -29,7 +26,8 @@
     -->
     <!--組織聊天-->
     <!--聊天區-->
-    <div class="Talk" talk_area ng-if="activeRoom"></div>
+    <chat-panel class="Talk" *ngIf="gb.currentRoom"></chat-panel>
+   
     <div id="CB"></div>
 </div>
 

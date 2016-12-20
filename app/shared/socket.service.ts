@@ -31,7 +31,7 @@ export class Io {
 
             this.socket.on('login', () => {
                 observer.next('login');
-                
+
             })
 
             this.socket.on('logout', () => {
@@ -56,12 +56,39 @@ export class Io {
             this.socket.on('organizeres', (msg: any) => {
                 observer.next('get organizeres');
                 this.globalValue.organizeres = JSON.parse(msg)['data'];
+                //  this.organizeresAddAttr();
                 observer.complete();
             })
 
             this.socket.on('projectres', () => {
                 observer.next('get projectres room');
             })
+
+        })
+
+        return observable
+    }
+
+    getMsg(msg: any) {
+        let observable = Observable.create((observer: any) => {
+
+            let re = JSON.parse(msg);
+            if (re.status == 0) {
+                observer.next('get msg success')
+                let data = re.data
+                let room = this.globalValue.rooms[data.room.roomid]
+
+                room.msg = data.message
+                _.forEach(data.member, (val, idx) => {
+                    room.users.push(val.employeeid)
+                })
+
+                
+                observer.complete()
+
+            } else {
+                observer.error('get msg error')
+            }
 
         })
 
@@ -84,6 +111,13 @@ export class Io {
         })
 
         fn();
+
+    }
+
+    private organizeresAddAttr() {
+        _.forEach(this.globalValue.organizeres, (val, idx) => {
+            val.isOpen = false
+        })
 
     }
 }

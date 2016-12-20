@@ -6,6 +6,7 @@ export class GlobalValue {
     public users: Array < any > ;
     public organizeres: Array < any > ;
     public rooms: Array < any > ;
+    public currentRoom:Object;
    
 }
 

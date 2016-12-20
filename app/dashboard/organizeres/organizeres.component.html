@@ -1,30 +1,25 @@
 <ul>
     <li *ngFor="let item of organizeres">
-        <div class="List_item List_A">{{item.title}}</div>
-        <ul>
+        <div class="List_item List_A" (click)="accordion(item)" [ngClass]="{'List_select':item.isOpen}">{{item.title}}</div>
+        <ul [hidden]="!item.isOpen">
             <li *ngFor="let department of item.child">
-                <div class='List_item List_B_title'>{{department.title}}</div>
-                <ul [ngSwitch]="my(department.child)">
+                <div class='List_item List_B_title' (click)="accordion(department)" [ngClass]="{'List_B_select':department.isOpen}">{{department.title}}</div>
+                <ul [ngSwitch]="checkChild(department.child)" [hidden]="!department.isOpen">
                     <div *ngSwitchCase="'has_child'">
                         <li *ngFor="let group of department.child">
-                            <div class='List_C'>{{group.title}}</div>
-                            <ul>
+                            <div class='List_C' (click)="accordion(group)">{{group.title}}</div>
+                            <ul [hidden]="!group.isOpen">
                                 <li *ngFor="let user of group.employee">
-                                	<room class='person' [user]="user"></room>
+                                    <room class='person' [user]="user"></room>
                                 </li>
                             </ul>
                         </li>
                     </div>
-
-                    
                     <div *ngSwitchCase="'end'">
-                    
                         <li *ngFor="let user of department.employee">
                             <room class='person' [user]="user"></room>
                         </li>
-                    
                     </div>
-                    
                 </ul>
             </li>
         </ul>

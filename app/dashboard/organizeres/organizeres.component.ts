@@ -11,7 +11,7 @@ import { GlobalValue } from "../../shared/global_value.service";
 export class Organizeres {   
     public organizeres: Array < any >
 
-    my(_val: any) {
+    checkChild(_val: any) {
         if (_val.length > 0) {
             return "has_child"
         } else {
@@ -23,6 +23,10 @@ export class Organizeres {
         this.organizeres = globalValue.organizeres
     }
 
+    accordion(obj:any){
+    	obj.isOpen = !obj.isOpen
+    }
 
 
 }
+//

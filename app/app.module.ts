@@ -11,13 +11,16 @@ import { Dashboard } from './dashboard/dashboard.component.js';
 //service
 import { Io } from "./shared/socket.service";
 import { Ajax } from "./shared/ajax.service";
+import { GlobalValue } from "./shared/global_value.service";
+import { Chat } from './dashboard/shared/chat.service.js';
 
 
 import { routing } from './app.routes';
-import { GlobalValue } from "./shared/global_value.service";
+
+
 import { Organizeres } from "./dashboard/organizeres/organizeres.component.js";
 import { SingleRoom } from "./dashboard/shared/single-room.component.js";
-
+import { ChatPanel,SingleMsg } from "./dashboard/chat_panel/chat-panel.component.js";
 
 @NgModule({
     imports: [
@@ -32,13 +35,16 @@ import { SingleRoom } from "./dashboard/shared/single-room.component.js";
         Login,
         Dashboard,
         Organizeres,
-        SingleRoom
+        SingleRoom,
+        ChatPanel,
+        SingleMsg
     ],
     bootstrap: [AppComponent],
     providers: [
         GlobalValue,
         Io,
-        Ajax
+        Ajax,
+        Chat
     ]
 })
 export class AppModule {}
