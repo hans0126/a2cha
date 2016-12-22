@@ -1,6 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, Directive, HostListener } from '@angular/core';
 import { Chat } from '../shared/chat.service';
 import { GlobalValue } from '../../shared/global_value.service';
+import { ChatDate } from '../../shared/pips.service';
+import { Io } from "../../shared/socket.service";
+
 
 @Component({
     moduleId: module.id,
@@ -10,118 +13,167 @@ import { GlobalValue } from '../../shared/global_value.service';
 
 export class ChatPanel {
     public gb: Object
+    @ViewChild('msgContentElem') msgContentElem: ElementRef
+    @ViewChild('fileElem') fileElem: ElementRef
+
+    //   @ViewChild('inputBox') inputBox: ElementRef
     constructor(globalValue: GlobalValue) {
         this.gb = globalValue
+
     }
 
+    ngOnInit() {
+
+    }
 }
 
 @Component({
     moduleId: module.id,
     selector: "msg",
-    template: `<div *ngIf="!owner" class='Message_img' [ngStyle]="{'background-image': 'url('+pic+')'}"></div>
-	<div [ngClass]= "{'Message_To_icon':owner,'Message_From_icon':!owner}"></div>
-	<div [ngClass]="classSwitch()" [innerHtml]="msgContent"></div>
-	<div [ngClass]="{'Message_To_time':owner,'Message_From_time':!owner}">{{dateTime}}</div>
+    template: `<div *ngIf="!owner" class='Message_img' [ngStyle]="{'background-image': 'url('+userPic+')'}"></div>
+	<div *ngIf="msgType=='txt'" [ngClass]= "{'Message_To_icon':owner,'Message_From_icon':!owner}"></div>
+	<div [ngClass]="msgTypeClass()" [ngSwitch]="msgDisplayType">
+		<div *ngSwitchCase="'normal'">{{singleMsg.message}}</div>
+		<div *ngSwitchCase="'file'"><a href='{{singleMsg.filepath}}' target='_blank'>{{singleMsg.filename}}</a></div>
+		<div *ngSwitchCase="'image'"><a href='{{singleMsg.filepath}}' target='_blank'><img #img src='{{singleMsg.filepath}}'/></a></div>
+	</div>
+	<div [ngClass]="{'Message_To_time':owner,'Message_From_time':!owner}">{{singleMsg.date| ChatDate}}</div>
     <div id='CB'></div>`
 })
 
 export class SingleMsg {
     @Input() singleMsg: any
+    @Input() msgContentElem: any
 
+    @ViewChild('img') img: ElementRef
     public owner: Boolean = true
-    public pic: String
-    public dateTime:String
-    public msgContent:String
+    public userPic: String
+    public dateTime: String
+    public msgContent: String
+    public direct: String = "To"
+    public msgType: String = "txt"
+    public msgDisplayType: String //normal,file,image
     constructor(private globalValue: GlobalValue) {}
 
     ngOnInit() {
-    	console.log("A")
-        let direct = 'To',
-        msgType = 'txt'
 
         if (this.globalValue.userInfo.employeeid != this.singleMsg.employeeid) {
             this.owner = false
-            this.pic = this.globalValue.users[this.singleMsg.employeeid].pic_link
-            direct = 'From'
+            this.userPic = this.globalValue.users[this.singleMsg.employeeid].pic_link
+            this.direct = 'From'
         }
-
-        this.dateTime = this.getDate(this.singleMsg.date)
-
-          switch (this.singleMsg.messagetype) {
-            case "1": //文字
-                this.msgContent = this.singleMsg.message;
-                break;
-            case "2": //檔案
-                this.msgContent = "<a href='" + this.singleMsg.filepath + "' target='_blank'>" + this.singleMsg.filename + "</a>";
-                break;
-            case "3":
-            case "4":
-                msgType = "sticker";
-                this.msgContent = "<a href='" + this.singleMsg.filepath + "' target='_blank'><img src='" + this.singleMsg.filepath + "'/></a>";
-                break;
-
-        }
-
-
-
-        /*
-        if (this.singleMsg.messagetype == "1" || this.singleMsg.messagetype == "2") {
-            this.msgContent += "<div class='Message_" + direct + "_icon'></div>";
-        }
-		*/
-
-        /*
-
-        let direct = 'To',
-            msgType = 'txt';
-
-
 
         switch (this.singleMsg.messagetype) {
-            case "1": //文字
-                this.msgContent = this.singleMsg.message;
+            case "1": //文字             
+                this.msgDisplayType = "normal"
                 break;
-            case "2": //檔案
-                this.msgContent = "<a href='" + this.singleMsg.filepath + "' target='_blank'>" + this.singleMsg.filename + "</a>";
+            case "2": //檔案                
+                this.msgDisplayType = "file"
                 break;
             case "3":
             case "4":
-                msgType = "sticker";
-                this.msgContent = "<a href='" + this.singleMsg.filepath + "' target='_blank'><img src='" + this.singleMsg.filepath + "'/></a>";
+                this.msgType = "sticker";
+                this.msgDisplayType = "image"
                 break;
-
         }
-
-       
-
-        if (this.globalValue.userInfo.employeeid != this.singleMsg.employeeid) {
-            let sendUser = this.globalValue.users[this.singleMsg.employeeid];
-            direct = 'From';
-            this.msgContent += `"<div class='Message_img' [ngStyle]="{'background-image': 'url('${sendUser.pic_link}')'}"></div>"`
-        }
-
-        if (this.singleMsg.messagetype == "1" || this.singleMsg.messagetype == "2") {
-            this.msgContent += "<div class='Message_" + direct + "_icon'></div>";
-        }
-
-        this.msgContent += "<div class='Message_" + direct + "_" + msgType + "'>" + msgContent + "</div>";
-        this.msgContent += "<div class='Message_" + direct + "_time'>{{date}}</div>";
-        this.msgContent += "<div id='CB'></div>";
-		*/
-
 
     }
 
-    classSwitch(){
-    	console.log("B")
-    	
-    	return "AAAA"
+    ngAfterViewInit() {
+        if (this.img) {
+            this.img.nativeElement.onload = () => {
+                this.scrollToBottom()
+            }
+        } else {
+            this.scrollToBottom()
+        }
     }
 
-    getDate(_d:String) {
-        var _re = _d.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
-        return _re[4] + ":" + _re[5]
+    msgTypeClass() {
+        return `Message_${this.direct}_${this.msgType}`
     }
 
+    scrollToBottom() {
+        this.msgContentElem.scrollTop = this.msgContentElem.scrollHeight
+    }
+
+    getCaretPosition() {
+        return window.getSelection().getRangeAt(0).endOffset;
+    }
+
+
+}
+
+
+@Directive({
+    selector: '[inputBox]'
+})
+export class InputBox {
+    public msgContent: String
+    public socket: any
+    public roomId: String
+
+    constructor(private elRef: ElementRef,
+        private globalValue: GlobalValue,
+        private io: Io) {
+
+        this.socket = io.socket
+        this.roomId = globalValue.currentRoom.roomId
+    }
+
+    @HostListener('keypress', ['$event']) onKeyDown(event: any) {
+        this.msgContent = this.elRef.nativeElement.innerText
+        if (event.which === 13) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!this.msgContent) return
+
+            let obj = {
+                roomid: this.roomId,
+                message: this.msgContent
+            }
+
+            this.socket.emit('textsendreq', JSON.stringify(obj));
+            this.msgContent = ""
+            this.elRef.nativeElement.innerText = ""
+
+        }
+    }
+
+    @HostListener('paste', ['$event']) onPast(event: any) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.msgContent = event.clipboardData.getData('text/plain')
+        this.elRef.nativeElement.innerText = this.msgContent
+    }
+}
+
+
+@Directive({
+    selector: '[updateFile]'
+})
+export class updateFile {
+    @Input() fileElem: any
+
+    public roomId: any
+    constructor(private io: Io,
+        private globalValue: GlobalValue) {
+
+        this.roomId = globalValue.currentRoom.roomId
+    }
+
+    ngOnInit() {
+        this.fileElem.onchange = () => {
+        	console.log(this.roomId);
+            this.io.upload(this.fileElem.files[0], { to: 'file', data: { 'roomid': this.roomId, 'id': '414324' } });
+            this.fileElem.value = "";
+        }
+
+    }
+
+
+    @HostListener('click', ['$event']) onClick(event: any) {
+        this.fileElem.click()
+    }
 }

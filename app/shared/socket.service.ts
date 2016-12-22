@@ -5,12 +5,14 @@ import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import * as _ from "lodash";
+import { loginInfo, GlobalValue, RoomTemplate } from './global_value.service';
 
-import { loginInfo } from './global_value.service';
-import { GlobalValue, RoomTemplate } from './global_value.service';
+declare var SocketIOFileClient: any;
+
 @Injectable()
 export class Io {
     socket: SocketIOClient.Socket;
+    public socketIOFile: any
 
     constructor(private globalValue: GlobalValue) {}
 
@@ -23,7 +25,14 @@ export class Io {
 
         let observable = Observable.create((observer: any) => {
 
-            this.socket = io('ws://evpn.ittms.com.tw:5280', { query: query });
+            this.socket = io('ws://evpn.ittms.com.tw:5280', {
+                query: query,
+                transports: ['websocket']
+            });
+
+            this.socketIOFile = new SocketIOFileClient(this.socket)
+
+            console.log(this.socketIOFile)
 
             this.socket.on("connect", () => {
                 observer.next('connect');
@@ -31,7 +40,6 @@ export class Io {
 
             this.socket.on('login', () => {
                 observer.next('login');
-
             })
 
             this.socket.on('logout', () => {
@@ -69,7 +77,11 @@ export class Io {
         return observable
     }
 
-    getMsg(msg: any) {
+    upload(file: any, options: Object) {
+        this.socketIOFile.upload(file, options);
+    }
+
+    roomInit(msg: any) {
         let observable = Observable.create((observer: any) => {
 
             let re = JSON.parse(msg);
@@ -83,17 +95,19 @@ export class Io {
                     room.users.push(val.employeeid)
                 })
 
-                
+
                 observer.complete()
 
             } else {
-                observer.error('get msg error')
+                observer.error('get room init error')
             }
 
         })
 
         return observable
     }
+
+
 
     private createUsersRoom(users: Array < any > , fn: () => void) {
         this.globalValue.rooms = [];

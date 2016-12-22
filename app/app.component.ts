@@ -19,7 +19,7 @@ export class AppComponent {
 
             globalValue.loginInfo = {
                 employeeId: params['employee_id'] || "08073",
-                passwd: params['passwd'] || "156456",
+                passwd: params['passwd'] || "874778",
                 accountsType: params['accounts_type'] || "5",
                 ittmscode: params['ittmscode'] || "C000061"
             }

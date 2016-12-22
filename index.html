@@ -11,23 +11,20 @@
     <script src="node_modules/zone.js/dist/zone.js"></script>
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
-    <script src="node_modules/socket.io-client/dist/socket.io.min.js"></script>
+    <script src="http://evpn.ittms.com.tw:5280/js/socket.io-file-client.js"></script>
     <script src="systemjs.config.js"></script>
-   
     <script>
     System.import('app').catch(function(err) {
         console.error(err);
     });
+
     </script>
 </head>
 
 <body>
-<base href="/">
-
+    <base href="/">
     <my-app>Loading AppComponent content here ...</my-app>
-   
-
-     
 </body>
 
 </html>
+

@@ -11,8 +11,7 @@ export class Chat {
 
 	 openRoom(obj:any){
 
-	 	this.globalValue.currentRoom = this.globalValue.rooms[obj.roomid]
-	 	console.log(this.globalValue.currentRoom )
+	 	this.globalValue.currentRoom = this.globalValue.rooms[obj.roomid]	 	
 	 	if(!obj.hasLoad){
 	 		obj.hasLoad = true
 	 		this.io.socket.emit('messagereq',JSON.stringify({ roomid: obj.roomid }))

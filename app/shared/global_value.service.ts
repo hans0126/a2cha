@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GlobalValue {
     public loginInfo: loginInfo;
-    public userInfo: Object;
+    public userInfo: any;
     public users: Array < any > ;
     public organizeres: Array < any > ;
     public rooms: Array < any > ;
-    public currentRoom:Object;
+    public currentRoom:any;
    
 }
 

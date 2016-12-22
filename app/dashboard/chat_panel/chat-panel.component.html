@@ -1,25 +1,25 @@
 <!--內容區-->
-<div class="Talk_Content Scroll">
+<div class="Talk_Content Scroll" #msgContentElem>
     <!--單筆訊息 From -->
-    <msg class="Message" *ngFor="let item of gb.currentRoom.msg" [singleMsg]="item"></msg>
+    <msg class="Message" *ngFor="let item of gb.currentRoom.msg" [singleMsg]="item" [msgContentElem]="msgContentElem"></msg>
     
 </div>
 <!--功能區-->
 <div class="Talk_Menu">
     <div class="Talk_Menu_item Talk_Menu_emoji"></div>
     <div class="Talk_Menu_item Talk_Menu_sticker"></div>
-    <div class="Talk_Menu_item Talk_Menu_file" ng-click="triggerFile()"></div>
+    <div class="Talk_Menu_item Talk_Menu_file" updateFile [fileElem]="fileElem"></div>
     <!--<div class="Talk_Menu_item Talk_Menu_catch" ></div>-->
     <!--文字大小-->
     <div class="Talk_Menu_item_A Talk_Menu_Aa"></div>
     <div class="Talk_Menu_item_A Talk_Menu_A"></div>
     <div class="Talk_Menu_item_A Talk_Menu_Ad"></div>
     <div class="Talk_Menu_txt"></div>
-    <input type="file" id="file_update" style="display:none">
+    <input type="file" #fileElem style="display:none">
 </div>
 <!--輸入區-->
 <div class="Talk_input">
-    <div class='writeBox' contenteditable="true">{{userInput}}</div>
+    <div class='writeBox' inputBox contenteditable="true">{{userInput}}</div>
     <!--
     <div class="Talk_input_btnTB">
         <input type="button" name="button" value="傳送" class="Talk_input_btn" />

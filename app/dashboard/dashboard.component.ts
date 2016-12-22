@@ -17,16 +17,29 @@ export class Dashboard {
 
         if (!globalValue.userInfo) {
             this.router.navigate(['']);
+            return
         }
 
         this.gb = globalValue
 
-        io.socket.on('messageres', (msg: any) => {
-            io.getMsg(msg).subscribe((msg: any) => { console.log(msg) },
+        io.socket.on('messageres', (re: any) => {
+            io.roomInit(re).subscribe(
+                (msg: any) => { console.log(msg) },
                 (msg: any) => { console.log(msg) },
                 () => { console.log('load msg success') })
         })
 
+        io.socket.on('receive', (msg: any) => {
+            let re = JSON.parse(msg)
+            console.log(re)
+            let room = this.globalValue.rooms[re.roomid]
+            room.msg.push(re)
+        })
+        /*
+        io.socket.on('filesendres', function(msg: any) {
+            console.log(msg)
+        });
+        */
 
 
 
