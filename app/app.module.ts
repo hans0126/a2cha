@@ -20,6 +20,7 @@ import { routing } from './app.routes';
 
 
 import { Organizeres } from "./dashboard/organizeres/organizeres.component.js";
+import { RoomList } from "./dashboard/room_list/roomlist.component.js";
 import { SingleRoom } from "./dashboard/shared/single-room.component.js";
 import { ChatPanel,SingleMsg,InputBox,updateFile} from "./dashboard/chat_panel/chat-panel.component.js";
 
@@ -41,7 +42,9 @@ import { ChatPanel,SingleMsg,InputBox,updateFile} from "./dashboard/chat_panel/c
         SingleMsg,
         ChatDate,
         InputBox,
-        updateFile
+        updateFile,
+        RoomList
+
     ],
     bootstrap: [AppComponent],
     providers: [

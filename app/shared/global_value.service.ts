@@ -6,19 +6,47 @@ export class GlobalValue {
     public users: Array < any > ;
     public organizeres: Array < any > ;
     public rooms: Array < any > ;
-    public currentRoom:any;
-   
+    public searchRooms: Array < any > = [];
+    public projectRooms: Array < any > = [];
+    public historyRooms: Array < any > = [];
+    public currentRoom: any;
+    public authType: Array < any > = [];
+
+    constructor() {
+        this.authType["organizeres"] = {
+            class: "Menu_hsihung",
+            name: "organizeres"
+        }
+
+        this.authType["provider"] = {
+            class: "Menu_guide",
+            name: "provider"
+        }
+
+        this.authType["project"] = {
+            class: "Menu_group",
+            name: "project"
+
+        }
+
+        this.authType["history"] = {
+            class: "Menu_chat",
+            name: "history"
+        }
+
+    }
+
 }
 
-export const RoomTemplate:room = {
+export const RoomTemplate: room = {
     roomId: null,
-        msg: [],
-        users: [],
-        name: null,
-        picLink: null,
-        hasLoad: false,
-        unreadCount: 0,
-        active: false
+    msg: [],
+    users: [],
+    name: null,
+    picLink: null,
+    hasLoad: false,
+    unreadCount: 0,
+    active: false
 }
 
 

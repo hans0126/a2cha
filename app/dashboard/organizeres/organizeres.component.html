@@ -10,14 +10,14 @@
                             <div class='List_C' (click)="accordion(group)">{{group.title}}</div>
                             <ul [hidden]="!group.isOpen">
                                 <li *ngFor="let user of group.employee">
-                                    <room class='person' [user]="user"></room>
+                                    <room class='person' [roomId]="user.roomid"></room>
                                 </li>
                             </ul>
                         </li>
                     </div>
                     <div *ngSwitchCase="'end'">
                         <li *ngFor="let user of department.employee">
-                            <room class='person' [user]="user"></room>
+                            <room class='person' [roomId]="user.roomid"></room>
                         </li>
                     </div>
                 </ul>

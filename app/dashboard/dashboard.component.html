@@ -1,33 +1,31 @@
 <div id="besttourTalk">
     <!--主選單-->
-    <div class="Menu">
-        <div ng-if="c.authBtn.organizeres" class="MenuItem Menu_hsihung" ng-click="switchBtn('organizeres')"></div>
-        <div ng-if="c.authBtn.provider" class="MenuItem Menu_guide" ng-click="switchBtn('provider')"></div>
-        <!--
-            <div class="MenuItem Menu_b2e"></div>
-            <div class="MenuItem Menu_b2b"></div>
-            -->
-        <div ng-if="c.authBtn.project" class="MenuItem Menu_group" ng-click="switchBtn('project')"></div>
-        <div ng-if="c.authBtn.history" class="MenuItem Menu_chat" ng-click="switchBtn('history')"></div>
-        <div id="menuTxt" class="Menu_txt">喜鴻</div>
+    <div class="Menu" *ngIf="gb.userInfo">
+        <div *ngFor="let item of gb.userInfo.btns" class="MenuItem" [ngClass]="item.class" (click)="changeRoomList(item.name)"></div>
     </div>
     <!--搜尋-->
-    <div class="Search" search-input>
+    <div class="Search">
+        <input type='text' placeholder='搜尋聯絡人' #searchInput class='search_Input' (keyup)="onKey($event)" />
+        <div class='Search_Btn' (click)="searchRoom()"></div>
     </div>
     <!--聯絡人-->
-    <organizeres class="List Scroll">
-    </organizeres>
+    <div [ngSwitch]="currentShowList">
+        <organizeres *ngSwitchCase="'organizeres'" class="List Scroll"></organizeres>
+        <roomList *ngSwitchCase="'searchRooms'" [listType]="'searchRooms'" class="List Scroll"></roomList>
+        <roomList *ngSwitchCase="'project'" [listType]="'projectRooms'" class="List Scroll"></roomList>
+        <roomList *ngSwitchCase="'history'" [listType]="'historyRooms'" class="List Scroll"></roomList>
+    </div>
     <!--
+    
+    
     <div ng-show="showCtrl.project" class="List Scroll" room-list="project"></div>
     <div ng-show="showCtrl.search" class="List Scroll" room-list="searchRooms"></div>
     <div ng-show="showCtrl.history" class="List Scroll" room-list="history"></div>
     <div ng-show="showCtrl.provider" class="List Scroll" room-list="providerRooms"></div>
-
     -->
     <!--組織聊天-->
     <!--聊天區-->
     <chat-panel class="Talk" *ngIf="gb.currentRoom"></chat-panel>
-   
     <div id="CB"></div>
 </div>
 

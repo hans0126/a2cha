@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, Directive, HostListener } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, Directive, HostListener, Output, EventEmitter } from '@angular/core';
 import { Chat } from '../shared/chat.service';
 import { GlobalValue } from '../../shared/global_value.service';
 import { ChatDate } from '../../shared/pips.service';
@@ -15,16 +15,12 @@ export class ChatPanel {
     public gb: Object
     @ViewChild('msgContentElem') msgContentElem: ElementRef
     @ViewChild('fileElem') fileElem: ElementRef
-
-    //   @ViewChild('inputBox') inputBox: ElementRef
+    
     constructor(globalValue: GlobalValue) {
         this.gb = globalValue
-
     }
 
-    ngOnInit() {
-
-    }
+ 
 }
 
 @Component({
@@ -115,10 +111,14 @@ export class InputBox {
 
     constructor(private elRef: ElementRef,
         private globalValue: GlobalValue,
-        private io: Io) {
+        private io: Io,
+        private chat: Chat) {
 
         this.socket = io.socket
         this.roomId = globalValue.currentRoom.roomId
+        chat.clearTextEvent.subscribe(() => {
+        	 this.clearContent()
+        })
     }
 
     @HostListener('keypress', ['$event']) onKeyDown(event: any) {
@@ -135,9 +135,7 @@ export class InputBox {
             }
 
             this.socket.emit('textsendreq', JSON.stringify(obj));
-            this.msgContent = ""
-            this.elRef.nativeElement.innerText = ""
-
+            this.clearContent()
         }
     }
 
@@ -146,6 +144,11 @@ export class InputBox {
         event.stopPropagation();
         this.msgContent = event.clipboardData.getData('text/plain')
         this.elRef.nativeElement.innerText = this.msgContent
+    }
+
+    private clearContent() {
+        this.msgContent = ""
+        this.elRef.nativeElement.innerText = ""
     }
 }
 
@@ -165,7 +168,7 @@ export class updateFile {
 
     ngOnInit() {
         this.fileElem.onchange = () => {
-        	console.log(this.roomId);
+            console.log(this.roomId);
             this.io.upload(this.fileElem.files[0], { to: 'file', data: { 'roomid': this.roomId, 'id': '414324' } });
             this.fileElem.value = "";
         }

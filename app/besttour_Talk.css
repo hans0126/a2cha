@@ -734,3 +734,8 @@ room {
 msg {
     display: block;
 }
+
+roomlist {
+    display: block;
+    z-index:20;
+}

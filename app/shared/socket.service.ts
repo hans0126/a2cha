@@ -32,8 +32,6 @@ export class Io {
 
             this.socketIOFile = new SocketIOFileClient(this.socket)
 
-            console.log(this.socketIOFile)
-
             this.socket.on("connect", () => {
                 observer.next('connect');
             })
@@ -48,6 +46,8 @@ export class Io {
 
             this.socket.on('personres', (msg: any) => {
                 this.globalValue.userInfo = JSON.parse(msg)['data'];
+                this.globalValue.userInfo.authType = loginInfo.accountsType
+                this.userAuth()
                 observer.next('get current user data');
                 this.socket.emit('usersreq');
             })
@@ -56,7 +56,7 @@ export class Io {
                 observer.next('get users room data');
                 let users = JSON.parse(msg)['data']
 
-                this.createUsersRoom(users, () => {
+                this.createRoomFromUser(users, () => {
                     this.socket.emit('organizereq');
                 })
             })
@@ -64,13 +64,30 @@ export class Io {
             this.socket.on('organizeres', (msg: any) => {
                 observer.next('get organizeres');
                 this.globalValue.organizeres = JSON.parse(msg)['data'];
-                //  this.organizeresAddAttr();
-                observer.complete();
+                this.socket.emit('projectreq')
+
             })
 
-            this.socket.on('projectres', () => {
-                observer.next('get projectres room');
+            this.socket.on('projectres', (msg: any) => {
+                let rooms = JSON.parse(msg)['data'];
+                this.createRooms(rooms,"projectRooms" ,() => {
+                    // console.log( this.globalValue.projectRooms);
+                    observer.next('get projectres room');
+                    this.socket.emit('openhistoryreq');
+                })
+
+
             })
+
+            this.socket.on('openhistoryres', (msg: any) => {
+                let rooms = JSON.parse(msg)['data'];
+                this.createRooms(rooms,"historyRooms" ,() => {
+                    observer.next('get history room');
+                    observer.complete();
+                })
+            })
+
+
 
         })
 
@@ -109,7 +126,7 @@ export class Io {
 
 
 
-    private createUsersRoom(users: Array < any > , fn: () => void) {
+    private createRoomFromUser(users: Array < any > , fn: () => void) {
         this.globalValue.rooms = [];
         this.globalValue.users = [];
 
@@ -128,11 +145,46 @@ export class Io {
 
     }
 
+
+    private createRooms(projects: Array < any > ,roomGroup:any, fn: () => void) {
+
+        this.globalValue[roomGroup] = [];
+
+        _.forEach(projects, (val, idx) => {
+            //create room
+            let copyRoom = Object.assign({}, RoomTemplate)
+            copyRoom.roomId = val.roomid;
+            copyRoom.name = val.roomname;
+            this.globalValue.rooms[val.roomid] = copyRoom
+            this.globalValue[roomGroup].push(copyRoom)
+        })
+
+        fn();
+
+    }
+
+
     private organizeresAddAttr() {
         _.forEach(this.globalValue.organizeres, (val, idx) => {
             val.isOpen = false
         })
+    }
 
+    private userAuth() {
+        this.globalValue.userInfo.btns = []
+        switch (this.globalValue.userInfo.authType) {
+            case "5":
+                this.addAuth("organizeres")
+                this.addAuth("provider")
+                this.addAuth("project")
+                this.addAuth("history")
+                break;
+        }
+    }
+
+    private addAuth(item: any) {
+        let btnItem = this.globalValue.authType[item];
+        this.globalValue.userInfo.btns.push(btnItem)
     }
 }
 
