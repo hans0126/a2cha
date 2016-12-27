@@ -26,7 +26,8 @@ export class ChatPanel {
 @Component({
     moduleId: module.id,
     selector: "msg",
-    template: `<div *ngIf="!owner" class='Message_img' [ngStyle]="{'background-image': 'url('+userPic+')'}"></div>
+    template: `<div *ngIf="!owner">{{singleMsg.employeename}}</div>
+    <div *ngIf="!owner" class='Message_img' [ngStyle]="{'background-image': 'url('+userPic+')'}"></div>
 	<div *ngIf="msgType=='txt'" [ngClass]= "{'Message_To_icon':owner,'Message_From_icon':!owner}"></div>
 	<div [ngClass]="msgTypeClass()" [ngSwitch]="msgDisplayType">
 		<div *ngSwitchCase="'normal'">{{singleMsg.message}}</div>
@@ -52,7 +53,7 @@ export class SingleMsg {
     constructor(private globalValue: GlobalValue) {}
 
     ngOnInit() {
-
+        console.log(this.singleMsg)
         if (this.globalValue.userInfo.employeeid != this.singleMsg.employeeid) {
             this.owner = false
             this.userPic = this.globalValue.users[this.singleMsg.employeeid].pic_link

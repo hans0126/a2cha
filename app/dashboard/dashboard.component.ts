@@ -24,8 +24,7 @@ export class Dashboard {
             return
         }
 
-        this.gb = globalValue  
-
+        this.gb = globalValue         
         this.currentShowList = this.gb.userInfo.btns[0].name    
 
         io.socket.on('messageres', (re: any) => {

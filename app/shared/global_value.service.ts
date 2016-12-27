@@ -9,6 +9,7 @@ export class GlobalValue {
     public searchRooms: Array < any > = [];
     public projectRooms: Array < any > = [];
     public historyRooms: Array < any > = [];
+    public providerRooms: Array < any > = [];    
     public currentRoom: any;
     public authType: Array < any > = [];
 

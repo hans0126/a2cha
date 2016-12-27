@@ -55,7 +55,6 @@ export class Io {
             this.socket.on('usersres', (msg: any) => {
                 observer.next('get users room data');
                 let users = JSON.parse(msg)['data']
-
                 this.createRoomFromUser(users, () => {
                     this.socket.emit('organizereq');
                 })
@@ -70,18 +69,16 @@ export class Io {
 
             this.socket.on('projectres', (msg: any) => {
                 let rooms = JSON.parse(msg)['data'];
-                this.createRooms(rooms,"projectRooms" ,() => {
+                this.createGroupRooms(rooms, () => {
                     // console.log( this.globalValue.projectRooms);
                     observer.next('get projectres room');
                     this.socket.emit('openhistoryreq');
                 })
-
-
             })
 
             this.socket.on('openhistoryres', (msg: any) => {
-                let rooms = JSON.parse(msg)['data'];
-                this.createRooms(rooms,"historyRooms" ,() => {
+                let rooms = JSON.parse(msg)['data'];            
+                this.createHistoryRooms(rooms, () => {
                     observer.next('get history room');
                     observer.complete();
                 })
@@ -129,34 +126,69 @@ export class Io {
     private createRoomFromUser(users: Array < any > , fn: () => void) {
         this.globalValue.rooms = [];
         this.globalValue.users = [];
+        let createRoom = false
+        let arrUnit = ['organizeres','project','history']
 
+        _.forEach(this.globalValue.userInfo.btns,(val,idx)=>{
+           if(arrUnit.indexOf(val.name)>-1){
+               createRoom = true
+               return false
+           }       
+        })
+      
         _.forEach(users, (val, idx) => {
             //create user
             this.globalValue.users[val.employee_id] = val;
             //create room
-            let copyRoom = Object.assign({}, RoomTemplate)
-            copyRoom.roomId = val.roomid;
-            copyRoom.name = val.name;
-            copyRoom.picLink = val.pic_link;
-            this.globalValue.rooms[val.roomid] = (copyRoom)
+            if(createRoom){
+                let copyRoom = Object.assign({}, RoomTemplate)
+                copyRoom.roomId = val.roomid;
+                copyRoom.name = val.name;
+                copyRoom.picLink = val.pic_link;
+                this.globalValue.rooms[val.roomid] = copyRoom
+            }
+
         })
 
         fn();
 
     }
 
+    private createHistoryRooms(projects: Array < any > , fn: () => void) {
 
-    private createRooms(projects: Array < any > ,roomGroup:any, fn: () => void) {
-
-        this.globalValue[roomGroup] = [];
+        this.globalValue.historyRooms = [];
 
         _.forEach(projects, (val, idx) => {
+            let room = this.globalValue.rooms[val.roomid]
+            this.globalValue.historyRooms.push(room)
+        })
+
+        fn();
+
+    }
+
+    private createGroupRooms(rooms: Array < any > , fn: () => void) {
+        this.globalValue.projectRooms = [];
+        this.globalValue.providerRooms = [];
+
+        _.forEach(rooms, (val, idx) => {
             //create room
             let copyRoom = Object.assign({}, RoomTemplate)
             copyRoom.roomId = val.roomid;
             copyRoom.name = val.roomname;
+            copyRoom.picLink = val.pic_link;
             this.globalValue.rooms[val.roomid] = copyRoom
-            this.globalValue[roomGroup].push(copyRoom)
+
+            switch (val.chatroomtype) {
+                case "5":
+                    this.globalValue.projectRooms.push(copyRoom)
+                    break;
+
+                case "A":
+                    this.globalValue.providerRooms.push(copyRoom)
+                    break;
+
+            }
         })
 
         fn();
@@ -179,6 +211,10 @@ export class Io {
                 this.addAuth("project")
                 this.addAuth("history")
                 break;
+
+            case "A":
+                this.addAuth("provider")
+                break
         }
     }
 
@@ -186,6 +222,7 @@ export class Io {
         let btnItem = this.globalValue.authType[item];
         this.globalValue.userInfo.btns.push(btnItem)
     }
+
 }
 
 
