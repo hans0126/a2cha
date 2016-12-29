@@ -1,32 +1,30 @@
 <div id="besttourTalk">
     <!--主選單-->
-    <div class="Menu" *ngIf="gb.userInfo">
+    <div id="menu" *ngIf="gb.userInfo">
         <div *ngFor="let item of gb.userInfo.btns" class="MenuItem" [ngClass]="item.class" (click)="changeRoomList(item.name)"></div>
     </div>
-    <!--搜尋-->
-    <div class="Search">
-        <input type='text' placeholder='搜尋聯絡人' #searchInput class='search_Input' (keyup)="onKey($event)" />
-        <div class='Search_Btn' (click)="searchRoom()"></div>
+    <div id="roomsListArea">
+        <!--搜尋-->
+        <div class="Search">
+            <input type='text' placeholder='搜尋聯絡人' #searchInput class='search_Input' (keyup)="onKey($event)" />
+            <div class='Search_Btn' (click)="searchRoom()"></div>
+        </div>
+        <!--聯絡人-->
+        <div [ngSwitch]="currentShowList">
+            <organizeres *ngSwitchCase="'organizeres'" class="List Scroll"></organizeres>
+            <roomList *ngSwitchCase="'searchRooms'" [listType]="'searchRooms'" class="List Scroll"></roomList>
+            <roomList *ngSwitchCase="'project'" [listType]="'projectRooms'" class="List Scroll"></roomList>
+            <roomList *ngSwitchCase="'provider'" [listType]="'providerRooms'" class="List Scroll"></roomList>
+            <roomList *ngSwitchCase="'history'" [listType]="'historyRooms'" class="List Scroll"></roomList>
+        </div>
     </div>
-    <!--聯絡人-->
-    <div [ngSwitch]="currentShowList">
-        <organizeres *ngSwitchCase="'organizeres'" class="List Scroll"></organizeres>
-        <roomList *ngSwitchCase="'searchRooms'" [listType]="'searchRooms'" class="List Scroll"></roomList>
-        <roomList *ngSwitchCase="'project'" [listType]="'projectRooms'" class="List Scroll"></roomList>
-        <roomList *ngSwitchCase="'provider'" [listType]="'providerRooms'" class="List Scroll"></roomList>
-        <roomList *ngSwitchCase="'history'" [listType]="'historyRooms'" class="List Scroll"></roomList>
-    </div>
-    <!--
-    
-    
-    <div ng-show="showCtrl.project" class="List Scroll" room-list="project"></div>
-    <div ng-show="showCtrl.search" class="List Scroll" room-list="searchRooms"></div>
-    <div ng-show="showCtrl.history" class="List Scroll" room-list="history"></div>
-    <div ng-show="showCtrl.provider" class="List Scroll" room-list="providerRooms"></div>
-    -->
     <!--組織聊天-->
     <!--聊天區-->
-    <chat-panel class="Talk" *ngIf="gb.currentRoom"></chat-panel>
-    <div id="CB"></div>
+    <div id="chatArea">
+        <room-tab>
+        
+        </room-tab>
+        <chat-panel class="Talk" *ngIf="gb.currentRoom"></chat-panel>
+    </div>
 </div>
 

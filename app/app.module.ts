@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 //componet
 import { AppComponent } from './app.component';
 import { Login } from './login/login.component.js';
-import { Dashboard } from './dashboard/dashboard.component.js';
+import { Dashboard,RoomTab } from './dashboard/dashboard.component.js';
 
 //service
 import { Io } from "./shared/socket.service";
@@ -43,7 +43,8 @@ import { ChatPanel,SingleMsg,InputBox,updateFile} from "./dashboard/chat_panel/c
         ChatDate,
         InputBox,
         updateFile,
-        RoomList
+        RoomList,
+        RoomTab
 
     ],
     bootstrap: [AppComponent],

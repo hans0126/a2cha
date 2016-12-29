@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import * as _ from "lodash";
 
 
+import { Chat } from "./shared/chat.service";
+
+
 @Component({
     moduleId: module.id,
     templateUrl: 'dashboard.component.html'
@@ -12,7 +15,7 @@ import * as _ from "lodash";
 
 export class Dashboard {
     public gb: any = {}
-    public currentShowList:any
+    public currentShowList: any
     @ViewChild('searchInput') searchInput: ElementRef
 
     constructor(private globalValue: GlobalValue,
@@ -24,8 +27,8 @@ export class Dashboard {
             return
         }
 
-        this.gb = globalValue         
-        this.currentShowList = this.gb.userInfo.btns[0].name    
+        this.gb = globalValue
+        this.currentShowList = this.gb.userInfo.btns[0].name
 
         io.socket.on('messageres', (re: any) => {
             io.roomInit(re).subscribe(
@@ -34,7 +37,7 @@ export class Dashboard {
                 () => { console.log('load msg success') })
         })
 
-        io.socket.on('receive', (msg: any) => {            
+        io.socket.on('receive', (msg: any) => {
             let re = JSON.parse(msg)
             let room = this.globalValue.rooms[re.roomid]
             room.msg.push(re)
@@ -49,10 +52,10 @@ export class Dashboard {
 
     searchRoom() {
         let text = this.searchInput.nativeElement.value.replace(/^\s+|\s+$/g, '')
-        if(!text){
-            return 
+        if (!text) {
+            return
         }
-       
+
         this.globalValue.searchRooms = [];
         let reg = new RegExp('.?' + text + '.?', 'i')
 
@@ -66,9 +69,55 @@ export class Dashboard {
         this.changeRoomList("searchRooms")
     }
 
-    changeRoomList(name:String){
-         this.currentShowList = name
+    changeRoomList(name: String) {
+        this.currentShowList = name
     }
 
 
 }
+
+@Component({
+    moduleId: module.id,
+    template: `<div *ngFor="let item of gb.tabRooms" [ngStyle]="tabStyle(item)" [ngClass]="tabClass(item)" (click)="openRoom(item)">
+                    <div class="roomTitle">{{item.name}}</div>
+                    <div class="closeRoomBtn" (click)="closeRoom($event,item)">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </div>
+               </div>`,
+    selector: "room-tab"
+})
+
+export class RoomTab {
+    public gb: any;
+    constructor(private globalValue: GlobalValue, private chat: Chat) {
+        this.gb = globalValue
+    }
+
+    openRoom(room: any) {
+        this.chat.openRoom(room);
+    }
+
+    tabStyle(room: any) {
+        return {
+            "z-index": room.viewIndex
+        }
+    }
+
+    tabClass(room: any) {
+        if (room.viewIndex == 100) {
+            return "active"
+        }
+    }
+
+    closeRoom(event: any, item: any) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.chat.closeRoom(item);
+
+
+    }
+}
+
+/*
+ 
+            */

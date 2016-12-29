@@ -3,11 +3,11 @@ import { Chat } from './chat.service.js';
 import { GlobalValue } from "../../shared/global_value.service";
 @Component({
     selector: 'room',
-    template: `<div class='person' (click)="openRoom()">
+    template: `<div (click)="openRoom()">
     			<div class='person_img'   [ngStyle]="{'background-image': 'url(' + room.picLink + ')'}"></div>
     			<div class='person_name'>{{room.name}}</div>
     			<div class='person_num' *ngIf='room.unreadCount > 0'></div>
-    		  	<div id='CB'></div>
+    		  	
     		  	</div>`
 })
 

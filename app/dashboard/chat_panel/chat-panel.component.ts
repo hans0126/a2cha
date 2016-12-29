@@ -52,8 +52,7 @@ export class SingleMsg {
     public msgDisplayType: String //normal,file,image
     constructor(private globalValue: GlobalValue) {}
 
-    ngOnInit() {
-        console.log(this.singleMsg)
+    ngOnInit() {     
         if (this.globalValue.userInfo.employeeid != this.singleMsg.employeeid) {
             this.owner = false
             this.userPic = this.globalValue.users[this.singleMsg.employeeid].pic_link
@@ -115,8 +114,7 @@ export class InputBox {
         private io: Io,
         private chat: Chat) {
 
-        this.socket = io.socket
-        this.roomId = globalValue.currentRoom.roomId
+        this.socket = io.socket       
         chat.clearTextEvent.subscribe(() => {
         	 this.clearContent()
         })
@@ -131,7 +129,7 @@ export class InputBox {
             if (!this.msgContent) return
 
             let obj = {
-                roomid: this.roomId,
+                roomid: this.globalValue.currentRoom.roomId,
                 message: this.msgContent
             }
 
@@ -146,6 +144,7 @@ export class InputBox {
         this.msgContent = event.clipboardData.getData('text/plain')
         this.elRef.nativeElement.innerText = this.msgContent
     }
+    
 
     private clearContent() {
         this.msgContent = ""

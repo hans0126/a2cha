@@ -9,9 +9,10 @@ export class GlobalValue {
     public searchRooms: Array < any > = [];
     public projectRooms: Array < any > = [];
     public historyRooms: Array < any > = [];
-    public providerRooms: Array < any > = [];    
+    public providerRooms: Array < any > = [];
     public currentRoom: any;
     public authType: Array < any > = [];
+    public tabRooms: Array < any >= [];
 
     constructor() {
         this.authType["organizeres"] = {
@@ -47,7 +48,8 @@ export const RoomTemplate: room = {
     picLink: null,
     hasLoad: false,
     unreadCount: 0,
-    active: false
+    active: false,
+    viewIndex:1
 }
 
 
@@ -66,5 +68,6 @@ export interface room {
         picLink: String,
         hasLoad: Boolean,
         unreadCount: Number,
-        active: Boolean
+        active: Boolean,
+        viewIndex:Number
 }
