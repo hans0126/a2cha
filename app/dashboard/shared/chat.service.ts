@@ -31,9 +31,11 @@ export class Chat {
 
 
         if (this.globalValue.tabRooms.length > 8) {
-            this.globalValue.tabRooms.splice(this.globalValue.tabRooms.length-1,1)
+            this.globalValue.tabRooms.splice(this.globalValue.tabRooms.length - 1, 1)
         }
 
+        this.io.socket.emit('openreq', JSON.stringify({ roomid: obj.roomId }));
+        obj.unreadCount = 0;
 
         if (!obj.hasLoad) {
             obj.hasLoad = true
@@ -44,6 +46,7 @@ export class Chat {
     closeRoom(obj: any) {
         let roomIdx = this.globalValue.tabRooms.indexOf(obj)
         this.globalValue.tabRooms.splice(roomIdx, 1)
+        this.globalValue.currentRoom = null
         if (this.globalValue.tabRooms.length > 0) {
             this.openRoom(this.globalValue.tabRooms[0])
         }

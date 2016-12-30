@@ -79,10 +79,12 @@ export class Io {
             this.socket.on('openhistoryres', (msg: any) => {
                 let rooms = JSON.parse(msg)['data'];            
                 this.createHistoryRooms(rooms, () => {
-                    observer.next('get history room');
+                    observer.next('get history room');                   
                     observer.complete();
                 })
             })
+
+
 
 
 
@@ -145,6 +147,8 @@ export class Io {
                 copyRoom.roomId = val.roomid;
                 copyRoom.name = val.name;
                 copyRoom.picLink = val.pic_link;
+                copyRoom.unreadCount = val.count;
+             
                 this.globalValue.rooms[val.roomid] = copyRoom
             }
 
@@ -160,6 +164,7 @@ export class Io {
 
         _.forEach(projects, (val, idx) => {
             let room = this.globalValue.rooms[val.roomid]
+            room.unreadCount = val.count
             this.globalValue.historyRooms.push(room)
         })
 
@@ -177,8 +182,9 @@ export class Io {
             copyRoom.roomId = val.roomid;
             copyRoom.name = val.roomname;
             copyRoom.picLink = val.pic_link;
+            copyRoom.unreadCount = val.count;
             this.globalValue.rooms[val.roomid] = copyRoom
-
+         
             switch (val.chatroomtype) {
                 case "5":
                     this.globalValue.projectRooms.push(copyRoom)

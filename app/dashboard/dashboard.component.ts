@@ -41,6 +41,11 @@ export class Dashboard {
             let re = JSON.parse(msg)
             let room = this.globalValue.rooms[re.roomid]
             room.msg.push(re)
+
+            if(this.globalValue.currentRoom.roomId!=re.roomid){
+                room.unreadCount++;
+            }
+
         })
     }
 
@@ -104,9 +109,17 @@ export class RoomTab {
     }
 
     tabClass(room: any) {
+        let thisClass:Array<any> = []
+
         if (room.viewIndex == 100) {
-            return "active"
+            thisClass.push("active")
         }
+
+        if (room.unreadCount > 0) {
+            thisClass.push("notify")
+        }        
+
+        return thisClass
     }
 
     closeRoom(event: any, item: any) {
