@@ -13,7 +13,7 @@
         <div [ngSwitch]="currentShowList">
             <organizeres *ngSwitchCase="'organizeres'" class="List Scroll"></organizeres>
             <roomList *ngSwitchCase="'searchRooms'" [listType]="'searchRooms'" class="List Scroll"></roomList>
-            <roomList *ngSwitchCase="'project'" [listType]="'projectRooms'" class="List Scroll"></roomList>
+            <grouptree *ngSwitchCase="'project'" class="List Scroll"></grouptree>
             <roomList *ngSwitchCase="'provider'" [listType]="'providerRooms'" class="List Scroll"></roomList>
             <roomList *ngSwitchCase="'history'" [listType]="'historyRooms'" class="List Scroll"></roomList>
         </div>
@@ -21,9 +21,7 @@
     <!--組織聊天-->
     <!--聊天區-->
     <div id="chatArea">
-        <room-tab>
-        
-        </room-tab>
+        <room-tab></room-tab>
         <chat-panel class="Talk" *ngIf="gb.currentRoom"></chat-panel>
     </div>
 </div>

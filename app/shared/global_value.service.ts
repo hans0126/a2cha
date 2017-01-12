@@ -13,6 +13,8 @@ export class GlobalValue {
     public currentRoom: any;
     public authType: Array < any > = [];
     public tabRooms: Array < any >= [];
+    public groupTree: Array < any >= [];
+
 
     constructor() {
         this.authType["organizeres"] = {

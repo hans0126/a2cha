@@ -364,9 +364,9 @@ ul {
 #besttourTalk .Talk_Content {
     padding: 10px;
     width: 100%;
-    height: -moz-calc(100% - 140px);
-    height: -webkit-calc(100% - 140px);
-    height: calc(100% - 140px);
+    height: -moz-calc(100% - 200px);
+    height: -webkit-calc(100% - 200px);
+    height: calc(100% - 200px);
     border-bottom: 1px solid #CCC;
     overflow-x: hidden;
     overflow-y: auto;
@@ -539,6 +539,7 @@ ul {
     border-radius: 6px;
     background-color: #B3E7F0;
     float: left;
+     word-wrap:break-word;
 }
 
 #besttourTalk .Message_From_time {
@@ -804,7 +805,8 @@ room-tab::after {
 room,
 room-tab,
 msg,
-roomlist {
+roomlist,
+room-detail {
     display: block;
 }
 
@@ -826,4 +828,138 @@ roomlist {
     0%   {background-color: #333;}
     50% {background-color: white;}
     100%   {background-color: #333;}
+}
+
+
+
+room-detail {
+    padding: 10px 20px;
+    width: 100%;
+    border-bottom: 1px solid #DEDEDE;
+    background-color: #FFF;
+}
+
+room-detail > div::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+room-detail .person_img_l {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    float: left;
+    border-radius: 99em;
+    background-position: center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+room-detail .person_name_l {
+    /*margin-left: 10px;*/
+    height: 50px;
+    line-height: 50px;
+    float: left;
+    color: #333;
+    font-size: 24px;
+    font-weight: normal;
+    text-align: left;
+}
+
+room-detail .GL_name {
+    margin: 0px 10px 0px 0px;
+    height: 26px;
+    line-height: 26px;
+    color: #333;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+room-detail .GL_item {
+    position: absolute;
+    padding: 10px 20px;
+    border-bottom: 1px solid #DEDEDE;
+    border-top: 1px solid #DEDEDE;
+    background-color: #FFF;
+    top: 0;
+    left: 0;
+    width: 100%;
+    top: 70px;
+
+}
+
+room-detail .GL_img {
+    margin: 6px 6px 0px 0px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    border-radius: 99em;
+    background-position: center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+
+}
+
+room-detail .GL_img.active{
+    z-index: 999;    
+} 
+
+room-detail .GL_img.active > .floatLabel {
+    display: block;
+}
+
+room-detail .GL_more {
+    margin: 16px 0px 0px 5px;
+    padding: 0px 4px;
+    height: 15px;
+    line-height: 13px;
+    color: #FFF;
+    font-size: 12px;
+    text-align: center;
+    background-color: #31B7F5;
+    border-radius: 4px;
+    float: left;
+    cursor: pointer;
+}
+
+room-detail .GL_more:hover {
+    background-color: #FF0033;
+}
+
+.floatLabel {
+    display: none;
+    background: #333;
+    color: #FFF;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    font-size: 12px;
+    border-radius: 5px;
+    width: 5em;
+    text-align: center;
+    margin-left: -2.5em;   
+}
+
+.floatLabel::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 7.5px 5px 7.5px;
+    border-color: transparent transparent #333333 transparent;
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    margin-left: -7.5px;
 }

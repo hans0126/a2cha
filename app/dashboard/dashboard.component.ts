@@ -46,6 +46,11 @@ export class Dashboard {
                 room.unreadCount++;
             }
 
+            if(this.globalValue.tabRooms.indexOf(room)==-1){
+                this.globalValue.tabRooms.push(room)
+            }
+
+
         })
     }
 
@@ -126,10 +131,9 @@ export class RoomTab {
         event.preventDefault();
         event.stopPropagation();
         this.chat.closeRoom(item);
-
-
     }
 }
+
 
 /*
  

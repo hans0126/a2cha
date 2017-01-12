@@ -20,9 +20,10 @@ import { routing } from './app.routes';
 
 
 import { Organizeres } from "./dashboard/organizeres/organizeres.component.js";
+import { Grouptree } from "./dashboard/grouptree/grouptree.component.js";
 import { RoomList } from "./dashboard/room_list/roomlist.component.js";
 import { SingleRoom } from "./dashboard/shared/single-room.component.js";
-import { ChatPanel,SingleMsg,InputBox,updateFile} from "./dashboard/chat_panel/chat-panel.component.js";
+import { ChatPanel,SingleMsg,InputBox,updateFile,RoomDetail,UserImg} from "./dashboard/chat_panel/chat-panel.component.js";
 
 @NgModule({
     imports: [
@@ -44,7 +45,10 @@ import { ChatPanel,SingleMsg,InputBox,updateFile} from "./dashboard/chat_panel/c
         InputBox,
         updateFile,
         RoomList,
-        RoomTab
+        RoomTab,
+        RoomDetail,
+        Grouptree,
+        UserImg
 
     ],
     bootstrap: [AppComponent],

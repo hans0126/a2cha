@@ -7,7 +7,9 @@ import 'rxjs/add/operator/map';
 import * as _ from "lodash";
 import { loginInfo, GlobalValue, RoomTemplate } from './global_value.service';
 
-declare var SocketIOFileClient: any;
+declare let SocketIOFileClient: any;
+
+let wsUrl = "wss://evpn.ittms.com.tw:5280"
 
 @Injectable()
 export class Io {
@@ -25,7 +27,7 @@ export class Io {
 
         let observable = Observable.create((observer: any) => {
 
-            this.socket = io('ws://evpn.ittms.com.tw:5280', {
+            this.socket = io(wsUrl, {
                 query: query,
                 transports: ['websocket']
             });
@@ -64,22 +66,24 @@ export class Io {
                 observer.next('get organizeres');
                 this.globalValue.organizeres = JSON.parse(msg)['data'];
                 this.socket.emit('projectreq')
+                this.socket.emit('projectreqv2');
 
             })
 
-            this.socket.on('projectres', (msg: any) => {
-                let rooms = JSON.parse(msg)['data'];
-                this.createGroupRooms(rooms, () => {
+            this.socket.on('projectresv2', (msg: any) => {
+                let datas = JSON.parse(msg)['data'];
+                this.createGroupRooms(datas, () => {
                     // console.log( this.globalValue.projectRooms);
                     observer.next('get projectres room');
                     this.socket.emit('openhistoryreq');
                 })
+
             })
 
             this.socket.on('openhistoryres', (msg: any) => {
-                let rooms = JSON.parse(msg)['data'];            
+                let rooms = JSON.parse(msg)['data'];
                 this.createHistoryRooms(rooms, () => {
-                    observer.next('get history room');                   
+                    observer.next('get history room');
                     observer.complete();
                 })
             })
@@ -107,11 +111,7 @@ export class Io {
                 let room = this.globalValue.rooms[data.room.roomid]
 
                 room.msg = data.message
-                _.forEach(data.member, (val, idx) => {
-                    room.users.push(val.employeeid)
-                })
-
-
+                
                 observer.complete()
 
             } else {
@@ -129,26 +129,26 @@ export class Io {
         this.globalValue.rooms = [];
         this.globalValue.users = [];
         let createRoom = false
-        let arrUnit = ['organizeres','project','history']
+        let arrUnit = ['organizeres', 'project', 'history']
 
-        _.forEach(this.globalValue.userInfo.btns,(val,idx)=>{
-           if(arrUnit.indexOf(val.name)>-1){
-               createRoom = true
-               return false
-           }       
+        _.forEach(this.globalValue.userInfo.btns, (val, idx) => {
+            if (arrUnit.indexOf(val.name) > -1) {
+                createRoom = true
+                return false
+            }
         })
-      
+
         _.forEach(users, (val, idx) => {
             //create user
             this.globalValue.users[val.employee_id] = val;
             //create room
-            if(createRoom){
+            if (createRoom) {
                 let copyRoom = Object.assign({}, RoomTemplate)
                 copyRoom.roomId = val.roomid;
                 copyRoom.name = val.name;
                 copyRoom.picLink = val.pic_link;
                 copyRoom.unreadCount = val.count;
-             
+
                 this.globalValue.rooms[val.roomid] = copyRoom
             }
 
@@ -172,33 +172,36 @@ export class Io {
 
     }
 
-    private createGroupRooms(rooms: Array < any > , fn: () => void) {
+    private createGroupRooms(rooms: any, fn: () => void) {
         this.globalValue.projectRooms = [];
         this.globalValue.providerRooms = [];
+        this.globalValue.groupTree = rooms.hsihung;
 
-        _.forEach(rooms, (val, idx) => {
-            //create room
-            let copyRoom = Object.assign({}, RoomTemplate)
-            copyRoom.roomId = val.roomid;
-            copyRoom.name = val.roomname;
-            copyRoom.picLink = val.pic_link;
-            copyRoom.unreadCount = val.count;
-            this.globalValue.rooms[val.roomid] = copyRoom
-         
-            switch (val.chatroomtype) {
-                case "5":
-                    this.globalValue.projectRooms.push(copyRoom)
-                    break;
-
-                case "A":
-                    this.globalValue.providerRooms.push(copyRoom)
-                    break;
-
-            }
+        _.forEach(rooms.local, (val, idx) => {
+            this.groupPushRoom(val, "providerRooms")
         })
+
+        _.forEach(rooms.hsihung, (val, idx) => {
+            _.forEach(val.room, (val, idx) => {
+                this.groupPushRoom(val, "projectRooms")
+            })
+        })
+
+
 
         fn();
 
+    }
+
+    private groupPushRoom(roomDetail: any, category: any) {
+        let copyRoom = Object.assign({}, RoomTemplate)
+        copyRoom.roomId = roomDetail.roomid;
+        copyRoom.name = roomDetail.roomname;
+        copyRoom.picLink = "app/images/icon_group.png";
+        copyRoom.unreadCount = roomDetail.count;
+        copyRoom.users = roomDetail.employee;
+        this.globalValue.rooms[roomDetail.roomid] = copyRoom
+        this.globalValue[category].push(copyRoom)
     }
 
 

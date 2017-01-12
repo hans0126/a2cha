@@ -5,6 +5,8 @@ import { ChatDate } from '../../shared/pips.service';
 import { Io } from "../../shared/socket.service";
 
 
+
+
 @Component({
     moduleId: module.id,
     selector: "chat-panel",
@@ -180,3 +182,74 @@ export class updateFile {
         this.fileElem.click()
     }
 }
+
+
+@Component({
+    moduleId: module.id,
+    template: ` <div>
+                <div class="person_img_l"  [ngStyle]="{'background-image': 'url(' + gb.currentRoom.picLink + ')'}"></div>
+                <div class="person_name_l">{{gb.currentRoom.name}}</div>
+                <div class="GL_more" *ngIf="gb.currentRoom.users.length > 2" (click)="listToggle()">more</div>
+                </div>
+                <div class="GL_item" [hidden]="!roomUserList" *ngIf="gb.currentRoom.users.length > 2">   
+                    <user-img 
+                        class="GL_img" 
+                        *ngFor="let item of gb.currentRoom.users" 
+                        (click)="openRoom(item)"
+                        [ngStyle]="{'background-image': 'url(' + item.pic_link + ')'}" 
+                        [userDetail]="item" 
+                        [class.active]="item.floatLabelShow"></user-img>
+                </div>
+                `,
+    selector: "room-detail"
+})
+
+export class RoomDetail {
+    public gb: any;
+    public roomUserList:boolean = false;
+    constructor(private globalValue: GlobalValue,private chat:Chat) {
+        this.gb = globalValue
+    }
+
+    listToggle(){
+        this.roomUserList = !this.roomUserList;
+    }
+
+    openRoom(user:any){
+//        console.log(user.employee_id);
+
+      
+        let room = this.globalValue.rooms[this.globalValue.users[user.employee_id].roomid]
+        this.chat.openRoom(room);
+    }
+}
+
+
+@Component({
+    moduleId: module.id,
+    template: `<div class="floatLabel">{{userDetail.name}}</div>`,
+    selector: "user-img"
+})
+
+export class UserImg {
+   
+     @Input() userDetail: any
+
+    constructor(private elementRef:ElementRef) {
+      
+    }
+
+     ngOnInit() {
+           this.userDetail.floatLabelShow = false;
+     }
+
+     @HostListener('mouseover', ['$event']) onMouseover(event: any) {
+           this.userDetail.floatLabelShow = true;
+     }
+
+     @HostListener('mouseout', ['$event']) onMouseout(event: any) {
+          this.userDetail.floatLabelShow = false;
+     }
+     
+}
+
