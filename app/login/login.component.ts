@@ -14,17 +14,21 @@ export class Login {
     public socket: Object
     connection: any
 
+    
+
     constructor(private globalValue: GlobalValue, private io: Io, private router: Router ) {
         this.loginInfo = globalValue.loginInfo
     }
 
     submit() {
+
         this.io.login(this.loginInfo).subscribe(
         	(msg: String) => console.log(msg),
             (msg: String) => { console.log(msg) },
             () => {
                 console.log('complete')
-                this.router.navigate(['main']);
+                //this.router.navigate(['main']);
+                this.router.navigateByUrl('/main',true);
             })
 
     }

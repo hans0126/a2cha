@@ -16,7 +16,7 @@ import { Chat } from './dashboard/shared/chat.service.js';
 import { ChatDate } from "./shared/pips.service";
 
 
-import { routing } from './app.routes';
+//import { routing } from './app.routes';
 
 
 import { Organizeres } from "./dashboard/organizeres/organizeres.component.js";
@@ -30,7 +30,7 @@ import { ChatPanel,SingleMsg,InputBox,updateFile,RoomDetail,UserImg} from "./das
         BrowserModule,
         HttpModule,
         JsonpModule,
-        routing,
+  //     routing,
         FormsModule
     ],
     declarations: [

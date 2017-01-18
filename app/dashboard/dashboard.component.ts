@@ -16,6 +16,8 @@ import { Chat } from "./shared/chat.service";
 export class Dashboard {
     public gb: any = {}
     public currentShowList: any
+
+  
     @ViewChild('searchInput') searchInput: ElementRef
 
     constructor(private globalValue: GlobalValue,
@@ -54,13 +56,14 @@ export class Dashboard {
         })
     }
 
-    onKey(event: any) {
+    onKey(event: any) {      
         if (event.which == 13) {
             this.searchRoom()
         }
     }
 
     searchRoom() {
+        
         let text = this.searchInput.nativeElement.value.replace(/^\s+|\s+$/g, '')
         if (!text) {
             return
@@ -74,6 +77,8 @@ export class Dashboard {
                 this.globalValue.searchRooms.push(o)
             }
         })
+
+      
 
         this.searchInput.nativeElement.value = ""
         this.changeRoomList("searchRooms")

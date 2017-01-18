@@ -12,6 +12,7 @@ export class Organizeres {
     public organizeres: Array < any >
 
     checkChild(_val: any) {
+
         if (_val.length > 0) {
             return "has_child"
         } else {
@@ -19,12 +20,15 @@ export class Organizeres {
         }
     }
 
-    constructor(globalValue: GlobalValue) {
+    constructor(globalValue: GlobalValue) {       
         this.organizeres = globalValue.organizeres
+
+        
     }
 
     accordion(obj:any){
-    	obj.isOpen = !obj.isOpen
+        
+    	obj.isOpen = !obj.isOpen;
     }
 
 
