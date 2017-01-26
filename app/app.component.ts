@@ -27,7 +27,7 @@ export class AppComponent {
 
     }
 
-    private getParameterByName(name, url) {
+    private getParameterByName(name:any, url?:any) {
         if (!url) {
             url = window.location.href;
         }
