@@ -2,7 +2,12 @@
 <room-detail></room-detail>
 <div class="Talk_Content Scroll" #msgContentElem>
     <!--單筆訊息 From -->
-    <msg class="Message" *ngFor="let item of gb.currentRoom.msg" [singleMsg]="item" [msgContentElem]="msgContentElem"></msg>
+    <msg class="Message" 
+            *ngFor="let item of GB.currentRoom.msg; let last = last" 
+            [ready]="last ? true : false"
+            [singleMsg]="item" 
+            [msgContentElem]="msgContentElem"
+            [arrImg]="arrImg"></msg>
     
 </div>
 <!--功能區-->

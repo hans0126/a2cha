@@ -8,7 +8,7 @@ import { GlobalValue } from "../../shared/global_value.service";
     selector: 'organizeres'
 })
 
-export class Organizeres {   
+export class OrganizeresComponent {   
     public organizeres: Array < any >
 
     checkChild(_val: any) {

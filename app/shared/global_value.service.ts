@@ -15,6 +15,12 @@ export class GlobalValue {
     public tabRooms: Array < any >= [];
     public groupTree: Array < any >= [];
 
+    public pageIndex:Number = 0;
+
+
+    public roomImageProcess = 0;
+    public roomImageLoadedProcess = 0;
+
 
     constructor() {
         this.authType["organizeres"] = {
@@ -51,7 +57,8 @@ export const RoomTemplate: room = {
     hasLoad: false,
     unreadCount: 0,
     active: false,
-    viewIndex:1
+    viewIndex:1,
+    parent:null
 }
 
 
@@ -71,5 +78,6 @@ export interface room {
         hasLoad: Boolean,
         unreadCount: Number,
         active: Boolean,
-        viewIndex:Number
+        viewIndex:Number,
+        parent:any
 }

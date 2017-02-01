@@ -181,9 +181,11 @@ export class Io {
             this.groupPushRoom(val, "providerRooms")
         })
 
-        _.forEach(rooms.hsihung, (val, idx) => {
-            _.forEach(val.room, (val, idx) => {
-                this.groupPushRoom(val, "projectRooms")
+        _.forEach(this.globalValue.groupTree, (val, idx) => {
+            val.notify = false
+            let parent = val;
+            _.forEach(val.room, (val, idx) => {               
+                this.groupPushRoom(val, "projectRooms",parent)
             })
         })
 
@@ -193,13 +195,14 @@ export class Io {
 
     }
 
-    private groupPushRoom(roomDetail: any, category: any) {
+    private groupPushRoom(roomDetail: any, category: any,parent?:any) {
         let copyRoom = Object.assign({}, RoomTemplate)
         copyRoom.roomId = roomDetail.roomid;
         copyRoom.name = roomDetail.roomname;
-        copyRoom.picLink = "app/images/icon_group.png";
+        copyRoom.picLink = "images/icon_group.png";
         copyRoom.unreadCount = roomDetail.count;
         copyRoom.users = roomDetail.employee;
+        copyRoom.parent = parent || null;
         this.globalValue.rooms[roomDetail.roomid] = copyRoom
         this.globalValue[category].push(copyRoom)
     }

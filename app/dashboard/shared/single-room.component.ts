@@ -11,7 +11,7 @@ import { GlobalValue } from "../../shared/global_value.service";
     		  	</div>`
 })
 
-export class SingleRoom {
+export class SingleRoomComponent {
     @Input() roomId:any
     public room:any
    

@@ -3,6 +3,7 @@ import { Chat } from '../shared/chat.service';
 import { GlobalValue } from '../../shared/global_value.service';
 import { ChatDate } from '../../shared/pips.service';
 import { Io } from "../../shared/socket.service";
+import { Observable } from 'rxjs/Rx';
 
 
 
@@ -13,16 +14,15 @@ import { Io } from "../../shared/socket.service";
     templateUrl: "chat-panel.component.html"
 })
 
-export class ChatPanel {
-    public gb: Object
+export class ChatPanelComponent {   
+  
     @ViewChild('msgContentElem') msgContentElem: ElementRef
     @ViewChild('fileElem') fileElem: ElementRef
-    
-    constructor(globalValue: GlobalValue) {
-        this.gb = globalValue
+
+    constructor(private GB: GlobalValue) {
+        
     }
 
- 
 }
 
 @Component({
@@ -30,19 +30,24 @@ export class ChatPanel {
     selector: "msg",
     template: `<div *ngIf="!owner">{{singleMsg.employeename}}</div>
     <div *ngIf="!owner" class='Message_img' [ngStyle]="{'background-image': 'url('+userPic+')'}"></div>
-	<div *ngIf="msgType=='txt'" [ngClass]= "{'Message_To_icon':owner,'Message_From_icon':!owner}"></div>
-	<div [ngClass]="msgTypeClass()" [ngSwitch]="msgDisplayType">
-		<div *ngSwitchCase="'normal'">{{singleMsg.message}}</div>
-		<div *ngSwitchCase="'file'"><a href='{{singleMsg.filepath}}' target='_blank'>{{singleMsg.filename}}</a></div>
-		<div *ngSwitchCase="'image'"><a href='{{singleMsg.filepath}}' target='_blank'><img #img src='{{singleMsg.filepath}}'/></a></div>
-	</div>
-	<div [ngClass]="{'Message_To_time':owner,'Message_From_time':!owner}">{{singleMsg.date| ChatDate}}</div>
+    <div *ngIf="msgType=='txt'" [ngClass]= "{'Message_To_icon':owner,'Message_From_icon':!owner}"></div>
+    <div [ngClass]="msgTypeClass()" [ngSwitch]="msgDisplayType">
+        <div *ngSwitchCase="'normal'">{{singleMsg.message}}</div>
+        <div *ngSwitchCase="'file'"><a [href]="singleMsg.filepath" target='_blank'>{{singleMsg.filename}}</a></div>
+        <div *ngSwitchCase="'image'"><a [href]="singleMsg.filepath" target='_blank'><img #img [src]="singleMsg.filepath" (load)="loadedImg()" (error)="imgError($event)"/></a></div>
+    </div>
+    <div [ngClass]="{'Message_To_time':owner,'Message_From_time':!owner}">{{singleMsg.date| ChatDate}}</div>
     <div id='CB'></div>`
 })
 
-export class SingleMsg {
+export class SingleMsgComponent {
     @Input() singleMsg: any
     @Input() msgContentElem: any
+
+    @Input() ready: boolean
+    @Input() arrImg: any
+
+
 
     @ViewChild('img') img: ElementRef
     public owner: Boolean = true
@@ -52,12 +57,30 @@ export class SingleMsg {
     public direct: String = "To"
     public msgType: String = "txt"
     public msgDisplayType: String //normal,file,image
-    constructor(private globalValue: GlobalValue) {}
+    constructor(private GB: GlobalValue) {}
 
-    ngOnInit() {     
-        if (this.globalValue.userInfo.employeeid != this.singleMsg.employeeid) {
+    loadedImg(){
+      this.imgHandler() 
+    }
+
+    imgError(e:Event){
+       this.imgHandler()
+    }
+
+    private imgHandler(){
+        this.GB.roomImageLoadedProcess++
+      //  console.log(`${this.GB.roomImageLoadedProcess}/${this.GB.roomImageProcess}`);
+
+        if(this.GB.roomImageLoadedProcess == this.GB.roomImageProcess){
+            this.scrollToBottom()
+        }
+    }
+
+
+    ngOnInit() {
+        if (this.GB.userInfo.employeeid != this.singleMsg.employeeid) {
             this.owner = false
-            this.userPic = this.globalValue.users[this.singleMsg.employeeid].pic_link
+            this.userPic = this.GB.users[this.singleMsg.employeeid].pic_link
             this.direct = 'From'
         }
 
@@ -72,18 +95,16 @@ export class SingleMsg {
             case "4":
                 this.msgType = "sticker";
                 this.msgDisplayType = "image"
+                this.GB.roomImageProcess++
                 break;
-        }
+        }     
 
     }
 
     ngAfterViewInit() {
-        if (this.img) {
-            this.img.nativeElement.onload = () => {
-                this.scrollToBottom()
-            }
-        } else {
-            this.scrollToBottom()
+        if (this.ready) {
+            this.scrollToBottom();
+             
         }
     }
 
@@ -106,7 +127,7 @@ export class SingleMsg {
 @Directive({
     selector: '[inputBox]'
 })
-export class InputBox {
+export class InputBoxDirective {
     public msgContent: String
     public socket: any
     public roomId: String
@@ -116,9 +137,9 @@ export class InputBox {
         private io: Io,
         private chat: Chat) {
 
-        this.socket = io.socket       
+        this.socket = io.socket
         chat.clearTextEvent.subscribe(() => {
-        	 this.clearContent()
+            this.clearContent()
         })
     }
 
@@ -146,7 +167,7 @@ export class InputBox {
         this.msgContent = event.clipboardData.getData('text/plain')
         this.elRef.nativeElement.innerText = this.msgContent
     }
-    
+
 
     private clearContent() {
         this.msgContent = ""
@@ -158,7 +179,7 @@ export class InputBox {
 @Directive({
     selector: '[updateFile]'
 })
-export class updateFile {
+export class updateFileDirective {
     @Input() fileElem: any
 
     public roomId: any
@@ -204,21 +225,21 @@ export class updateFile {
     selector: "room-detail"
 })
 
-export class RoomDetail {
+export class RoomDetailComponent {
     public gb: any;
-    public roomUserList:boolean = false;
-    constructor(private globalValue: GlobalValue,private chat:Chat) {
+    public roomUserList: boolean = false;
+    constructor(private globalValue: GlobalValue, private chat: Chat) {
         this.gb = globalValue
     }
 
-    listToggle(){
+    listToggle() {
         this.roomUserList = !this.roomUserList;
     }
 
-    openRoom(user:any){
-//        console.log(user.employee_id);
+    openRoom(user: any) {
+        //        console.log(user.employee_id);
 
-      
+
         let room = this.globalValue.rooms[this.globalValue.users[user.employee_id].roomid]
         this.chat.openRoom(room);
     }
@@ -231,25 +252,24 @@ export class RoomDetail {
     selector: "user-img"
 })
 
-export class UserImg {
-   
-     @Input() userDetail: any
+export class UserImgComponent {
 
-    constructor(private elementRef:ElementRef) {
-      
+    @Input() userDetail: any
+
+    constructor(private elementRef: ElementRef) {
+
     }
 
-     ngOnInit() {
-           this.userDetail.floatLabelShow = false;
-     }
+    ngOnInit() {
+        this.userDetail.floatLabelShow = false;
+    }
 
-     @HostListener('mouseover', ['$event']) onMouseover(event: any) {
-           this.userDetail.floatLabelShow = true;
-     }
+    @HostListener('mouseover', ['$event']) onMouseover(event: any) {
+        this.userDetail.floatLabelShow = true;
+    }
 
-     @HostListener('mouseout', ['$event']) onMouseout(event: any) {
-          this.userDetail.floatLabelShow = false;
-     }
-     
+    @HostListener('mouseout', ['$event']) onMouseout(event: any) {
+        this.userDetail.floatLabelShow = false;
+    }
+
 }
-

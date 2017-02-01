@@ -5,24 +5,23 @@
     </tr>
     <tr>
         <td>
-            <input type="text" [ngModel]="loginInfo.employeeId" (ngModelChange)="loginInfo.employeeId=$event">
+            <input type="text" [ngModel]="GB.loginInfo.employeeId" (ngModelChange)="GB.loginInfo.employeeId=$event">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="text" [ngModel]="loginInfo.passwd" (ngModelChange)="loginInfo.passwd=$event">
+            <input type="text" [ngModel]="GB.loginInfo.passwd" (ngModelChange)="GB.loginInfo.passwd=$event">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="text" [ngModel]="loginInfo.accountsType" (ngModelChange)="loginInfo.accountsType=$event">
+            <input type="text" [ngModel]="GB.loginInfo.accountsType" (ngModelChange)="GB.loginInfo.accountsType=$event">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="text" [ngModel]="loginInfo.ittmscode" (ngModelChange)="loginInfo.ittmscode=$event">
+            <input type="text" [ngModel]="GB.loginInfo.ittmscode" (ngModelChange)="GB.loginInfo.ittmscode=$event">
         </td>
     </tr>
 </table>
 <button (click)="submit()">login</button>
-

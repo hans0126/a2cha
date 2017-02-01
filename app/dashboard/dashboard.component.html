@@ -1,8 +1,10 @@
 <div id="besttourTalk">
     <!--主選單-->
-    <div id="menu" *ngIf="gb.userInfo">
-        <div *ngFor="let item of gb.userInfo.btns" class="MenuItem" [ngClass]="item.class" (click)="changeRoomList(item.name)"></div>
+    
+    <div id="menu" *ngIf="GB.userInfo">
+        <div *ngFor="let item of GB.userInfo.btns" class="MenuItem" [ngClass]="item.class" (click)="changeRoomList(item.name)"></div>
     </div>
+    
     <div id="roomsListArea">
         <!--搜尋-->
         <div class="Search">
@@ -22,7 +24,7 @@
     <!--聊天區-->
     <div id="chatArea">
         <room-tab></room-tab>
-        <chat-panel class="Talk" *ngIf="gb.currentRoom"></chat-panel>
+        <chat-panel class="Talk" *ngIf="GB.currentRoom"></chat-panel>
     </div>
 </div>
 

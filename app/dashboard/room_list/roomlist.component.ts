@@ -8,7 +8,7 @@ import { GlobalValue } from "../../shared/global_value.service";
     selector: 'roomList'
 })
 
-export class RoomList {
+export class RoomListComponent {
     public gd: any
     @Input() listType: String
 

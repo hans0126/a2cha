@@ -1,4 +1,4 @@
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable} from 'rxjs/Rx';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalValue, loginInfo } from "./shared/global_value.service";
@@ -7,27 +7,30 @@ import { GlobalValue, loginInfo } from "./shared/global_value.service";
 @Component({
     moduleId: module.id,
     selector: 'my-app',
-    styleUrls: ['besttour_Talk.css'],
-    template: `<div *ngIf="0">123</div>`,
-    encapsulation: ViewEncapsulation.None
+    // styleUrls: ['besttour_Talk.css'],
+    template: `<login-page *ngIf="GB.pageIndex == 0"></login-page>
+                <dashboard-page *ngIf="GB.pageIndex == 1"></dashboard-page>`
+        // encapsulation: ViewEncapsulation.None
 })
 
 export class AppComponent {
-    private subscription: Subscription;
-    constructor(private globalValue: GlobalValue) {
 
-        globalValue.loginInfo = {
+    constructor(private GB: GlobalValue) {
+
+
+        
+
+        GB.loginInfo = {
             employeeId: this.getParameterByName('employee_id') || "08073",
-            passwd: this.getParameterByName('passwd') || "912316",
+            passwd: this.getParameterByName('passwd') || "904308",
             accountsType: this.getParameterByName('accounts_type') || "5",
             ittmscode: this.getParameterByName('ittmscode') || "C000061"
         }
 
-        console.log(globalValue.loginInfo)
-
+        console.log(GB.loginInfo)
     }
 
-    private getParameterByName(name:any, url?:any) {
+    private getParameterByName(name: any, url ? : any) {
         if (!url) {
             url = window.location.href;
         }

@@ -7,7 +7,7 @@ import { GlobalValue } from "../../shared/global_value.service";
     selector: 'grouptree'
 })
 
-export class Grouptree {
+export class GrouptreeComponent {
     public groupTree: Array < any >
 
         checkChild(_val: any) {

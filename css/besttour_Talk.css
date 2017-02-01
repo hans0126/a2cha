@@ -126,7 +126,7 @@ ul {
     color: #E2E2E2;
     font-size: 13px;
     text-align: center;
-    background-image: url(app/images/Menu_txt.svg);
+    background-image: url(../images/Menu_txt.svg);
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
@@ -140,42 +140,42 @@ ul {
 /*喜鴻*/
 
 #besttourTalk .Menu_hsihung {
-    background-image: url(app/images/Menu_hsihung.svg);
+    background-image: url(../images/Menu_hsihung.svg);
 }
 
 
 /*供應商*/
 
 #besttourTalk .Menu_guide {
-    background-image: url(app/images/Menu_guide.svg);
+    background-image: url(../images/Menu_guide.svg);
 }
 
 
 /*企業*/
 
 #besttourTalk .Menu_b2e {
-    background-image: url(app/images/Menu_b2e.svg);
+    background-image: url(../images/Menu_b2e.svg);
 }
 
 
 /*同業*/
 
 #besttourTalk .Menu_b2b {
-    background-image: url(app/images/Menu_b2b.svg);
+    background-image: url(../images/Menu_b2b.svg);
 }
 
 
 /*群組*/
 
 #besttourTalk .Menu_group {
-    background-image: url(app/images/Menu_group.svg);
+    background-image: url(../images/Menu_group.svg);
 }
 
 
 /*聊天*/
 
 #besttourTalk .Menu_chat {
-    background-image: url(app/images/Menu_chat.svg);
+    background-image: url(../images/Menu_chat.svg);
 }
 
 #roomsListArea {
@@ -220,7 +220,7 @@ ul {
     width: 30px;
     height: 30px;
     float: right;
-    background-image: url(app/images/btn_search.svg);
+    background-image: url(../images/btn_search.svg);
     background-size: 26px;
     background-position: center;
     background-repeat: no-repeat;
@@ -240,14 +240,14 @@ ul {
     font-weight: bold;
     color: #333;
     border-bottom: 1px solid #CCC;
-    background-image: url(app/images/List_A_0.svg);
+    background-image: url(../images/List_A_0.svg);
     background-repeat: no-repeat;
     background-position: right center;
     cursor: pointer;
 }
 
 #besttourTalk .List_select {
-    background-image: url(app/images/List_A_1.svg);
+    background-image: url(../images/List_A_1.svg);
 }
 
 #besttourTalk .List_A {
@@ -265,7 +265,7 @@ ul {
     padding: 0px 20px;
     width: 100%;
     color: #333;
-    background-image: url(app/images/List_A_0.svg);
+    background-image: url(../images/List_A_0.svg);
     background-position: right 20px center;
     border: none;
 }
@@ -276,7 +276,7 @@ ul {
     color: #00B7D7;
     font-weight: bold;
     background-color: #FFF;
-    background-image: url(app/images/List_A_blue.svg);
+    background-image: url(../images/List_A_blue.svg);
     background-position: right 20px center;
     border: none;
 }
@@ -406,19 +406,19 @@ ul {
 }
 
 #besttourTalk .Talk_Menu_emoji {
-    background-image: url(app/images/icon_emoji.svg);
+    background-image: url(../images/icon_emoji.svg);
 }
 
 #besttourTalk .Talk_Menu_sticker {
-    background-image: url(app/images/icon_sticker.svg);
+    background-image: url(../images/icon_sticker.svg);
 }
 
 #besttourTalk .Talk_Menu_file {
-    background-image: url(app/images/icon_file.svg);
+    background-image: url(../images/icon_file.svg);
 }
 
 #besttourTalk .Talk_Menu_catch {
-    background-image: url(app/images/icon_catch.svg);
+    background-image: url(../images/icon_catch.svg);
 }
 
 #besttourTalk .Talk_input_btnTB {
@@ -456,7 +456,7 @@ ul {
     color: #FAFAFA;
     font-size: 13px;
     text-align: center;
-    background-image: url(app/images/icon_txt_bg.svg);
+    background-image: url(../images/icon_txt_bg.svg);
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
@@ -484,15 +484,15 @@ ul {
 }
 
 #besttourTalk .Talk_Menu_A {
-    background-image: url(app/images/icon_A.svg);
+    background-image: url(../images/icon_A.svg);
 }
 
 #besttourTalk .Talk_Menu_Aa {
-    background-image: url(app/images/icon_Aa.svg);
+    background-image: url(../images/icon_Aa.svg);
 }
 
 #besttourTalk .Talk_Menu_Ad {
-    background-image: url(app/images/icon_Ad.svg);
+    background-image: url(../images/icon_Ad.svg);
 }
 
 
@@ -507,7 +507,7 @@ ul {
     width: 40px;
     height: 40px;
     border-radius: 99em;
-    background-image: url(app/images/person_img.jpg);
+    background-image: url(../images/person_img.jpg);
     background-position: center;
     background-repeat: no-repeat;
     float: left;
@@ -523,7 +523,7 @@ ul {
 #besttourTalk .Message_From_icon {
     width: 17px;
     height: 40px;
-    background-image: url(app/images/Message_txt_arrow_From.svg);
+    background-image: url(../images/Message_txt_arrow_From.svg);
     background-position: right -1px center;
     background-repeat: no-repeat;
     float: left;
@@ -583,7 +583,7 @@ ul {
 #besttourTalk .Message_To_icon {
     width: 17px;
     height: 40px;
-    background-image: url(app/images/Message_txt_arrow_To.svg);
+    background-image: url(../images/Message_txt_arrow_To.svg);
     background-position: left -1px center;
     background-repeat: no-repeat;
     float: right;
