@@ -48,7 +48,7 @@ export class DashboardComponent {
                 if (GB.currentRoom.roomId != re.roomid) {
                     room.unreadCount++;
                 }
-            }else{
+            } else {
                 room.unreadCount++;
             }
             /*
@@ -57,7 +57,7 @@ export class DashboardComponent {
             }
             */
 
-            if (room.parent) {              
+            if (room.parent) {
                 if (room.unreadCount > 0) {
                     room.parent.notify = true
                 } else {
@@ -97,8 +97,26 @@ export class DashboardComponent {
         this.changeRoomList("searchRooms")
     }
 
-    changeRoomList(name: String) {
+    changeRoomList(name: string) {
         this.currentShowList = name
+    }
+
+
+    menuBtnClass(obj: any) {
+        let elmClass = {};
+        elmClass[obj.class] = true;
+        elmClass['mainBtnNotify'] = false
+        if (obj.notifyTarget) {
+            _.forEach(this.GB[obj.notifyTarget], (val, idx) => {               
+                if (val.unreadCount > 0) {
+                    elmClass['mainBtnNotify'] = true;
+                    return false
+                }
+            })
+        }
+
+
+        return elmClass
     }
 
 

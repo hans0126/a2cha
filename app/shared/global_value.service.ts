@@ -25,23 +25,28 @@ export class GlobalValue {
     constructor() {
         this.authType["organizeres"] = {
             class: "Menu_hsihung",
-            name: "organizeres"
+            name: "organizeres",
+            notifyTarget:null
+
         }
 
         this.authType["provider"] = {
             class: "Menu_guide",
-            name: "provider"
+            name: "provider",
+            notifyTarget:"providerRooms"
         }
 
         this.authType["project"] = {
             class: "Menu_group",
-            name: "project"
+            name: "project",
+            notifyTarget:"projectRooms"
 
         }
 
         this.authType["history"] = {
             class: "Menu_chat",
-            name: "history"
+            name: "history",
+            notifyTarget:"historyRooms"
         }
 
     }

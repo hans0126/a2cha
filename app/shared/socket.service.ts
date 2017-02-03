@@ -203,6 +203,11 @@ export class Io {
         copyRoom.unreadCount = roomDetail.count;
         copyRoom.users = roomDetail.employee;
         copyRoom.parent = parent || null;
+
+        if(copyRoom.unreadCount > 0 ){
+            copyRoom.parent.notify = true; 
+        }
+
         this.globalValue.rooms[roomDetail.roomid] = copyRoom
         this.globalValue[category].push(copyRoom)
     }

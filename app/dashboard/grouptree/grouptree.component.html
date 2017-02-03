@@ -1,7 +1,6 @@
 <ul>
     <li *ngFor="let item of groupTree">
-
-        <div class="List_item List_A" (click)="accordion(item)" [ngClass]="{'List_select':item.isOpen}">{{item.groupname}}<span *ngIf="item.notify">notify</span></div>
+        <div class="List_item List_A" (click)="accordion(item)" [ngClass]="{'List_select':item.isOpen,'groupNotify':item.notify}">{{item.groupname}}</div>
         <ul [hidden]="!item.isOpen">
             <li *ngFor="let room of item.room">
                  <room class='person' [roomId]="room.roomid"></room>

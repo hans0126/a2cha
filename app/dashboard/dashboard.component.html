@@ -2,7 +2,7 @@
     <!--主選單-->
     
     <div id="menu" *ngIf="GB.userInfo">
-        <div *ngFor="let item of GB.userInfo.btns" class="MenuItem" [ngClass]="item.class" (click)="changeRoomList(item.name)"></div>
+        <div *ngFor="let item of GB.userInfo.btns" class="MenuItem" [ngClass]="menuBtnClass(item)" (click)="changeRoomList(item.name)"></div>
     </div>
     
     <div id="roomsListArea">

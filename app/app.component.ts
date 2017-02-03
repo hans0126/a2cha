@@ -22,7 +22,7 @@ export class AppComponent {
 
         GB.loginInfo = {
             employeeId: this.getParameterByName('employee_id') || "08073",
-            passwd: this.getParameterByName('passwd') || "904308",
+            passwd: this.getParameterByName('passwd') || "208612",
             accountsType: this.getParameterByName('accounts_type') || "5",
             ittmscode: this.getParameterByName('ittmscode') || "C000061"
         }
