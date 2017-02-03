@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, ElementRef, AfterViewInit, Directive, HostListener, Output, EventEmitter } from '@angular/core';
 import { Chat } from '../shared/chat.service';
 import { GlobalValue } from '../../shared/global_value.service';
-import { ChatDate } from '../../shared/pips.service';
+import { ChatDatePipe } from '../../shared/pips.service';
 import { Io } from "../../shared/socket.service";
 import { Observable } from 'rxjs/Rx';
 
@@ -36,7 +36,7 @@ export class ChatPanelComponent {
         <div *ngSwitchCase="'file'"><a [href]="singleMsg.filepath" target='_blank'>{{singleMsg.filename}}</a></div>
         <div *ngSwitchCase="'image'"><a [href]="singleMsg.filepath" target='_blank'><img #img [src]="singleMsg.filepath" (load)="loadedImg()" (error)="imgError($event)"/></a></div>
     </div>
-    <div [ngClass]="{'Message_To_time':owner,'Message_From_time':!owner}">{{singleMsg.date| ChatDate}}</div>
+    <div [ngClass]="{'Message_To_time':owner,'Message_From_time':!owner}">{{singleMsg.date| ChatDatePipe}}</div>
     <div id='CB'></div>`
 })
 

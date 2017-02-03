@@ -106,6 +106,7 @@ export class DashboardComponent {
         let elmClass = {};
         elmClass[obj.class] = true;
         elmClass['mainBtnNotify'] = false
+
         if (obj.notifyTarget) {
             _.forEach(this.GB[obj.notifyTarget], (val, idx) => {               
                 if (val.unreadCount > 0) {
@@ -114,7 +115,6 @@ export class DashboardComponent {
                 }
             })
         }
-
 
         return elmClass
     }
